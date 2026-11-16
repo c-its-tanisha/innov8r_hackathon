@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FleetMind AI: Simulated Fleet Digital Twin</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <h1>FleetMind AI</h1>
+    <p>Simulated Fleet Digital Twin of a virtual warehouse</p>
+  </div>
+  <div class="status">
+    <span id="modeBadge" class="badge smart">Smart</span>
+    <span class="meta">Tick <b id="tick">0</b></span>
+    <span class="meta" id="simKind">{{ sim_kind }} sim</span>
+    <span class="meta"><i id="conn" class="dot off"></i><span id="connText">Connecting</span></span>
+  </div>
+</header>
+<div class="hazard" aria-hidden="true"></div>
+
+<div id="banner" class="banner" hidden></div>
+
+<main class="layout">
+  <section class="floor-col">
+    <div class="toolbar">
+      <button id="btnStart" class="primary">Start</button>
+      <button id="btnPause">Pause</button>
+      <button id="btnReset">Reset</button>
+      <label class="inline">Speed
+        <select id="speed"><option value="2">0.5x</option><option value="4" selected>1x</option>
+          <option value="8">2x</option><option value="16">4x</option></select>
+      </label>
+      <span class="sep"></span>
+      <div class="seg" role="group" aria-label="Strategy">
+        <button id="modeSmart" class="on">Smart</button>
+        <button id="modeBase">Baseline</button>
+      </div>
+      <span class="sep"></span>
+      <button id="btnDemo">Load 8 demo tasks</button>
+      <button id="btnHuman">Spawn human</button>
+      <label class="inline"><input type="checkbox" id="showRes"> Show reservations</label>
+    </div>
+
+    <div class="stage"><canvas id="cv" aria-label="Warehouse floor plan"></canvas></div>
+    <p class="hint">Click a floor cell to block or unblock it. Robots reroute around blocked cells.</p>
+
+    <div class="panel">
+      <h2>Robots</h2>
+      <div id="robots" class="robots"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Why this robot?</h2>
+      <div id="allocWhy" class="why">Add a task to see how it is assigned.</div>
+      <div id="allocTable"></div>
+      <div id="allocHist" class="chips"></div>
+    </div>
+  </section>
+
+  <aside class="side">
+    <div class="panel">
+      <h2>New task</h2>
+      <div class="form">
+        <label>Pickup <select id="selPickup"></select></label>
+        <label>Drop <select id="selDrop"></select></label>
+        <label>Priority <select id="selPrio"><option value="1">1 Normal</option><option value="2">2 High</option><option value="3">3 Urgent</option></select></label>
+      </div>
+      <div class="row">
+        <button id="btnAdd" class="primary">Add task</button>
+        <button id="btnUrgent" class="danger">Add urgent task</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Performance</h2>
+      <div id="kpi" class="kpi"></div>
+      <p class="small">Averages cover completed tasks only. Read them next to tasks done.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Task queue</h2>
+      <div id="tasks"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Event log</h2>
+      <ul id="log" class="log"></ul>
+    </div>
+  </aside>
+</main>
+
+<div id="toast" class="toast" hidden></div>
+<script src="{{ url_for('static', filename='socket.io.min.js') }}"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
